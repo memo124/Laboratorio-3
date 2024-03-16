@@ -15,6 +15,7 @@ namespace laboratorio__2
         private List<producto> Productos = new List<producto>();
         private producto producto = new producto();
         private int edit_indice = -1;
+        private int cod = 0;
 
         public Form3()
         {
@@ -35,18 +36,21 @@ namespace laboratorio__2
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
         }
 
         private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (producto.codigoprod != 0) return;
-            producto.Eliminar(producto.codigoprod);
+            DataGridViewRow selected = dataGridView1.SelectedRows[0];
+            int posicion = dataGridView1.Rows.IndexOf(selected);
+            DataGridViewRow row = dataGridView1.Rows[posicion];
+            this.cod = Convert.ToInt32(row.Cells["codigoprod"].Value);
+
+            producto.Eliminar(this.cod);
+            CargarDatos();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -54,9 +58,12 @@ namespace laboratorio__2
             if (producto.codigoprod != 0) return;
             DataGridViewRow selected = dataGridView1.SelectedRows[0];
             int posicion = dataGridView1.Rows.IndexOf(selected);
+            DataGridViewRow row = dataGridView1.Rows[posicion];
+            this.cod = Convert.ToInt32(row.Cells["codigoprod"].Value);
+
             edit_indice = posicion; //copio esa variable en índice editado
             producto = Productos[posicion];
-            Form2 form2 = new Form2(1);
+            Form2 form2 = new Form2(this.cod);
             form2.cargarDatos();
             form2.ShowDialog();
         }
